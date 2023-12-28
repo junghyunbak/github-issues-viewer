@@ -16,7 +16,6 @@ import { defaultValue } from "@/constants";
 
 // components
 import { IssueListItem } from "./IssueListItem";
-import { IssueListPaginate } from "./IssueListPaginate";
 
 // utils
 import queryString from "query-string";
@@ -62,14 +61,10 @@ export function IssueList() {
   return (
     <div
       css={css`
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-
         padding: 1.25rem;
       `}
     >
-      {issueList.data.items.length > 0 ? (
+      {issueList.data.length > 0 ? (
         <ul
           css={css`
             width: 100%;
@@ -80,7 +75,7 @@ export function IssueList() {
             overflow: hidden;
           `}
         >
-          {issueList.data.items.map((issue) => {
+          {issueList.data.map((issue) => {
             return (
               <IssueListItem
                 key={issue.id}
@@ -94,13 +89,6 @@ export function IssueList() {
       ) : (
         <p>데이터가 없습니다.</p>
       )}
-
-      <IssueListPaginate
-        pageCount={Math.ceil(
-          issueList.data.total_count /
-            (parseInt(per_page as string) || defaultValue.DEFAULT_PER_PAGE)
-        )}
-      />
     </div>
   );
 }
