@@ -15,13 +15,35 @@ export const getRepoIssueList = async (
     queries.push(`label:${label}`);
   }
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const {
+    data: { items },
+  } = await octokit.rest.search.issuesAndPullRequests({
     q: queries.join("+"),
     per_page: perPage,
     page,
   });
 
-  return data;
+  return items;
+};
+
+export const getRepoIssueListTotalCount = async (
+  owner: string,
+  repo: string,
+  label: string
+) => {
+  const queries = [`type:issue`, `repo:${owner}/${repo}`];
+
+  if (label) {
+    queries.push(`label:${label}`);
+  }
+
+  const {
+    data: { total_count },
+  } = await octokit.rest.search.issuesAndPullRequests({
+    q: queries.join("+"),
+  });
+
+  return total_count;
 };
 
 export const getRepoIssueLabelList = async (
